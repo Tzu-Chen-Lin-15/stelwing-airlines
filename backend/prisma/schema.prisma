@@ -269,21 +269,17 @@ model Plan {
 }
 
 model PlanItem {
-  id               BigInt    @id @default(autoincrement()) @map("id")
-  planId           BigInt    @map("plan_id")
-  title            String    @map("title")
-  allDay           Boolean   @map("all_day")
-  startTime        DateTime  @map("start_time")
-  startTimezone    String    @map("start_timezone")
-  endTime          DateTime? @map("end_time")
-  endTimezone      String?   @map("end_timezone")
-  note             String?   @map("note") @db.Text
-  locationTextchar String?   @map("location_textchar")
-  locationUrl      String?   @map("location_url")
-  typeId           Int?      @map("type_id")
-  isDeleted        Int       @default(0) @map("is_deleted")
-  createdAt        DateTime  @default(now()) @map("created_at")
-  updatedAt        DateTime  @updatedAt @map("updated_at")
+  mediaId         BigInt     @id @default(autoincrement()) @map("media_id")
+  postId          BigInt     @map("post_id")
+  post            TravelPost @relation(fields: [postId], references: [postId], onDelete: Cascade)
+  mediaType       MediaType  @map("media_type")
+  mediaUrl        String     @map("media_url") @db.Text
+  thumbnailUrl    String?    @map("thumbnail_url") @db.Text
+  mimeType        String?    @map("mime_type") @db.VarChar(100)
+  fileSizeMb      Float      @default(0) @map("file_size_mb")
+  durationSeconds Int?       @map("duration_seconds")
+  orderIndex      Int        @default(0) @map("order_index")
+  createdAt       DateTime   @default(now()) @map("created_at")
 
   plan     Plan      @relation(fields: [planId], references: [id])
   category Category? @relation(fields: [typeId], references: [id])
